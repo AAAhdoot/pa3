@@ -46,7 +46,11 @@ void myfree(void *p1){
 	MemPtr ptr, pred, after;
 	ptr = (MemPtr)p1-1;
 	printf("5\n");
-	printf("%d\n",ptr->isfree);
+	printf("is it free? %d\n",ptr->isfree);
+	if(ptr->isfree == 1){ //if it's already free, fuck off
+		printf("fuck off\n");
+		return;
+	}
 	//2 cases for actually changing isfree of block: when pred and after are not free & when pred not free and after is free
 	if((pred=ptr->prev)!=0 && pred->isfree){
 		printf("1\n");
@@ -73,5 +77,6 @@ char *emily;
 
 emily = (char*)mymalloc(5*sizeof(char));
 myfree(emily);
+myfree(emily+1);
 return 0;
 }
