@@ -19,9 +19,9 @@ typedef struct MemEntry{
 
 typedef struct MemEntry* MemPtr;
 
-void *mymalloc(unsigned int size, char* file, int line);
+void *my_malloc(unsigned int size, char* file, int line);
 
-void myfree(void *p1, char* file, int line);
+void my_free(void *p1, char* file, int line);
 
 
 
