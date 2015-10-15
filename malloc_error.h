@@ -1,11 +1,15 @@
 #ifndef MALLOC_ERROR_H
 #define MALLOC_ERROR_H
-
-#define BLOCKSIZE 5000
+#define BLOCKSIZE 6400
 
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+#define malloc(x) my_malloc( x, __FILE__, __LINE__)
+#define free(x) my_free( x, __FILE__, __LINE__)
+
 
 typedef struct MemEntry{
 	struct MemEntry *prev, *succ;
@@ -15,9 +19,9 @@ typedef struct MemEntry{
 
 typedef struct MemEntry* MemPtr;
 
-void *mymalloc(unsigned int size);
+void *mymalloc(unsigned int size, char* file, int line);
 
-void myfree(void *p1);
+void myfree(void *p1, char* file, int line);
 
 
 

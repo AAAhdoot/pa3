@@ -1,7 +1,7 @@
 #include "malloc_error.h"
+ // total 500, then 400 then 5 ->error in sak's
 
-
-void *mymalloc(unsigned int size){
+void *my_malloc(unsigned int size,char* file, int line){
 static char bigblock[BLOCKSIZE];
 static int initialized=0;
 static MemPtr root;
@@ -41,7 +41,7 @@ do{
 }
 
 
-void myfree(void *p1){
+void my_free(void *p1,char *file, int line){
 	printf("4\n");
 	MemPtr ptr, pred, after;
 	ptr = (MemPtr)p1-1;
@@ -73,10 +73,12 @@ void myfree(void *p1){
 }
 
 int main(){
-char *emily;
-
-emily = (char*)mymalloc(5*sizeof(char));
-myfree(emily);
-myfree(emily+1);
+char *emily = (char*)malloc(400*sizeof(char));
+strcpy(emily,"emily");
+printf("%s\n",emily);
+char *sweta = (char*)malloc(5*sizeof(char));
+free(emily);
+free(sweta);
+//myfree(emily+1);
 return 0;
 }
