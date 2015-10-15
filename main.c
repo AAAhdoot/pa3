@@ -1,6 +1,6 @@
 #include "malloc_error.c"
 
-int main(){
+int main(int argc, char** argv){
   char *emily;
   int* ptr1;
   

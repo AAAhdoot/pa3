@@ -1,6 +1,6 @@
 #include "malloc_error.h"
 
-void *mymalloc(unsigned int size, char* filename, int line){
+void *my_malloc(unsigned int size, char* file, int line){
   static char bigblock[BLOCKSIZE];
   static int initialized=0;
   static MemPtr root;
@@ -15,21 +15,16 @@ void *mymalloc(unsigned int size, char* filename, int line){
     //recognition pattern??
   }
   if(size>BLOCKSIZE){
-    printf("<ERROR>%s:%d: Request larger than blocksize\n",filename,line);
+    printf("<ERROR>%s:%d: Request larger than blocksize\n",file,line);
     return NULL;
   }
-   if(size<=0){
-    printf("<ERROR>%s:%d: Request too small (0 or negative number)\n",filename,line);
+  if(size<=0){
+    printf("<ERROR>%s:%d: Request too small (0 or negative number)\n",file,line);
     return NULL;
   }
-
-void *my_malloc(unsigned int size,char* file, int line){
-static char bigblock[BLOCKSIZE];
-static int initialized=0;
-static MemPtr root;
-MemPtr p, post; 
 
   p=root;
+
   do{
     if(p->size<size) p=p->succ;
     else if(!p->isfree) p=p->succ;
@@ -55,10 +50,10 @@ MemPtr p, post;
 }
 
 
-void myfree(void *p1, char* filename, int line){
+void my_free(void *p1, char* file, int line){
   printf("4\n");
   if(p1==NULL){
-    printf("<ERROR>%s:%d: Attempting to free a null pointer\n", filename,line);
+    printf("<ERROR>%s:%d: Attempting to free a null pointer\n", file,line);
     return;
   }
   MemPtr ptr, pred, after;
@@ -66,7 +61,7 @@ void myfree(void *p1, char* filename, int line){
   printf("5\n");
   printf("is it free? %d\n",ptr->isfree);
   if(ptr->isfree == 1){ //if it's already free
-    printf("<ERROR>%s:%d: Already freed\n", filename,line);
+    printf("<ERROR>%s:%d: Already freed\n", file,line);
     return;
   }
   //2 cases for actually changing isfree of block: when pred and after are not free & when pred not free and after is free
@@ -90,16 +85,4 @@ void myfree(void *p1, char* filename, int line){
   return;
 }
 
-/*int main(){
-  char *emily;
-  int* ptr1;
-  emily = (char*)mymalloc(5*sizeof(char));
-  myfree(emily);
-  myfree(emily);
-  ptr1=NULL;
-  myfree(ptr1);
-  mymalloc(0);
-  return 0;
-}
-*/
 
