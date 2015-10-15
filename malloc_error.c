@@ -1,6 +1,5 @@
 #include "malloc_error.h"
 
-
 void *mymalloc(unsigned int size, char* filename, int line){
   static char bigblock[BLOCKSIZE];
   static int initialized=0;
@@ -23,6 +22,12 @@ void *mymalloc(unsigned int size, char* filename, int line){
     printf("<ERROR>%s:%d: Request too small (0 or negative number)\n",filename,line);
     return NULL;
   }
+
+void *my_malloc(unsigned int size,char* file, int line){
+static char bigblock[BLOCKSIZE];
+static int initialized=0;
+static MemPtr root;
+MemPtr p, post; 
 
   p=root;
   do{
@@ -97,3 +102,4 @@ void myfree(void *p1, char* filename, int line){
   return 0;
 }
 */
+
