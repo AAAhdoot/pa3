@@ -1,5 +1,4 @@
 #include "malloc_error.h"
-#include "malloc_error.c"
 
 int main(){
 	char* first;
