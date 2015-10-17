@@ -14,7 +14,7 @@
 typedef struct MemEntry{
   struct MemEntry *prev, *succ;
   int isfree, pattern;
-  unsigned int size;
+  size_t size;
   const char* file;
   unsigned int line;
 }MemEntry;
@@ -22,8 +22,8 @@ typedef struct MemEntry{
 typedef struct MemEntry* MemPtr;
 
 
-void* my_malloc(unsigned int size, const char* file, unsigned int line);
+void* my_malloc(size_t size, const char* file, unsigned int line);
 void my_free(void *q, const char* file, unsigned int line);
-void* my_calloc(unsigned int size, const char* file, unsigned int line);
+void* my_calloc(size_t size, const char* file, unsigned int line);
 
 #endif

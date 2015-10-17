@@ -34,8 +34,7 @@ void  memleak_check(){
   return;
 }
 
-
-void *my_malloc(unsigned int size, const char* file, unsigned int line){
+void *my_malloc(size_t size, const char* file, unsigned int line){
   static int initialized=0;
   static MemPtr root,mid;
   MemPtr p, post; 
@@ -77,10 +76,15 @@ void *my_malloc(unsigned int size, const char* file, unsigned int line){
   }
   do{
     if(p->size<size){ 
+      printf("1\n");
       p=p->succ;
     }
-    else if(!p->isfree) p=p->succ;
+    else if(!p->isfree){
+    printf("2\n");
+    p=p->succ;
+    } 
     else if(p->size<=(size+sizeof(MemEntry))){
+      printf("3\n");
       p->isfree=0;
       p->pattern = PATTERNUM;
       p->file = file;
@@ -114,7 +118,6 @@ void my_free(void *q, const char* file, unsigned int line){
     printf("<ERROR>%s:%d: Attempting to free a null pointer\n", file,line);
     return;
   }
-
   MemPtr ptr, pred, after;
   ptr = (MemPtr)q-1;
   if(ptr->pattern!=PATTERNUM){
@@ -143,7 +146,7 @@ void my_free(void *q, const char* file, unsigned int line){
   return;
 }
 
-void * my_calloc(unsigned int size, const char* file, unsigned int line){
+void * my_calloc(size_t size, const char* file, unsigned int line){
   void * result = my_malloc(size,file,line);
   if(!result){
     return 0;
