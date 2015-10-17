@@ -1,6 +1,6 @@
 #ifndef MALLOC_ERROR_H
 #define MALLOC_ERROR_H
-#define BLOCKSIZE 1000
+#define BLOCKSIZE 10000
 #define PATTERNUM 78245
 
 #include <stdlib.h>

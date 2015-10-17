@@ -69,7 +69,7 @@ void *my_malloc(unsigned int size, const char* file, unsigned int line){
     atexit(memleak_check);
   }
 
-  if(size>(BLOCKSIZE/10)-sizeof(MemEntry)){
+  if(size>(BLOCKSIZE/50)-sizeof(MemEntry)){
     p=mid;
   }
   else{
