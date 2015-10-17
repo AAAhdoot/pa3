@@ -1,6 +1,6 @@
 #ifndef MALLOC_ERROR_H
 #define MALLOC_ERROR_H
-#define BLOCKSIZE 500
+#define BLOCKSIZE 1000
 #define PATTERNUM 78245
 
 #include <stdlib.h>
@@ -14,6 +14,8 @@ typedef struct MemEntry{
   struct MemEntry *prev, *succ;
   int isfree, pattern;
   unsigned int size;
+  const char* file;
+  unsigned int line;
 }MemEntry;
 
 typedef struct MemEntry* MemPtr;
