@@ -11,9 +11,9 @@
 #define free(x) my_free( x, __FILE__, __LINE__)
 
 typedef struct MemEntry{
-	struct MemEntry *prev, *succ;
-	int isfree, pattern;
-	unsigned int size;
+  struct MemEntry *prev, *succ;
+  int isfree, pattern;
+  unsigned int size;
 }MemEntry;
 
 typedef struct MemEntry* MemPtr;

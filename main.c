@@ -11,18 +11,18 @@ int main(int argc, char** argv){
     printf("camille\n");
   }
 
-for(charlie =0;charlie<5;charlie++){
-  (char*)malloc(18*sizeof(char));
-}
+  for(charlie =0;charlie<5;charlie++){
+    (char*)malloc(18*sizeof(char));
+  }
 
-sweta = (char*)malloc(19*sizeof(char));
-
-
- free(emily);
- free(sweta);
+  sweta = (char*)malloc(19*sizeof(char));
 
 
-(char*)malloc(217*sizeof(char));
+  free(emily);
+  free(sweta);
+
+
+  (char*)malloc(217*sizeof(char));
 
 
 
@@ -30,7 +30,7 @@ sweta = (char*)malloc(19*sizeof(char));
   free(ptr1);
 
   malloc(0);
-printf("bruh\n");
+  printf("bruh\n");
   malloc(8000);
 
   return 0;
