@@ -36,7 +36,6 @@ void  memleak_check(){
 
 
 void *my_malloc(unsigned int size, const char* file, unsigned int line){
-  //  static char bigblock[BLOCKSIZE];
   static int initialized=0;
   static MemPtr root,mid;
   MemPtr p, post; 
@@ -71,16 +70,12 @@ void *my_malloc(unsigned int size, const char* file, unsigned int line){
   }
 
   if(size>(BLOCKSIZE/10)-sizeof(MemEntry)){
-    printf("BIG\n");
     p=mid;
   }
   else{
-    printf("SMALL\n");
     p=root;
   }
   do{
-    //    printf("p->size is %d\n",p->size);
-    // printf("size is %d\n",size);
     if(p->size<size){ 
       p=p->succ;
     }
@@ -106,7 +101,6 @@ void *my_malloc(unsigned int size, const char* file, unsigned int line){
       p->file = file;
       p->line = line;
       /*not post, is beginning of memory*/
-      printf("we made it! meha\n");
       return (char*)p+sizeof(MemEntry);
     }
   }while(p!=0 && p!=mid);
@@ -116,7 +110,6 @@ void *my_malloc(unsigned int size, const char* file, unsigned int line){
 
 
 void my_free(void *q, const char* file, unsigned int line){
-  printf("4\n");
   if(!q){
     printf("<ERROR>%s:%d: Attempting to free a null pointer\n", file,line);
     return;
@@ -128,26 +121,21 @@ void my_free(void *q, const char* file, unsigned int line){
     printf("<ERROR>%s:%d: Invalid free\n", file,line);
     return;
   }
-  printf("5\n");
-  printf("is it free? %d\n",ptr->isfree);
   if(ptr->isfree == 1){ //if it's already free
     printf("<ERROR>%s:%d: Already freed\n", file,line);
     return;
   }
   //2 cases for actually changing isfree of block: when pred and after are not free & when pred not free and after is free
   if((pred=ptr->prev)!=0 && pred->isfree){
-    printf("1\n");
     pred->size+=sizeof(MemEntry)+ptr->size;
     pred->succ= ptr->succ;
     if(ptr->succ!=0) ptr->succ->prev = pred;
   }
   else{
-    printf("2\n");
     ptr->isfree=1;
     pred=ptr;
   }
   if((after=ptr->succ)!=0 && after->isfree){
-    printf("3\n");
     pred->size+=sizeof(MemEntry)+after->size;
     pred->succ= after->succ;
     if(after->succ!=0) after->succ->prev=pred;		
