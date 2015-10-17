@@ -1,26 +1,33 @@
 #include "malloc_error.h"
 
-void *my_malloc(unsigned int size, char* file, int line){
+void *my_malloc(unsigned int size, const char* file, unsigned int line){
   static char bigblock[BLOCKSIZE];
   static int initialized=0;
-  static MemPtr root;
+  static MemPtr root,mid;
   MemPtr p, post; 
-  
-  if(!initialized){
-    root= (MemPtr)bigblock;
-    root->prev = root->succ = 0;
-    root->size = BLOCKSIZE - sizeof(MemEntry);
-    root->isfree = 1;
-    initialized = 1;
-    //recognition pattern??
-  }
-  if(size>BLOCKSIZE){
+
+    if(size+sizeof(MemEntry)>BLOCKSIZE){
     printf("<ERROR>%s:%d: Request larger than blocksize\n",file,line);
     return NULL;
   }
   if(size<=0){
     printf("<ERROR>%s:%d: Request too small (0 or negative number)\n",file,line);
     return NULL;
+  }
+
+  if(!initialized){
+    root= (MemPtr)bigblock;
+    root->prev = root->succ = 0;
+    root->size = BLOCKSIZE - sizeof(MemEntry);
+    root->isfree = 1;
+    initialized = 1;
+    root->pattern = PATTERNUM;
+    /*mid = (MemPtr)(bigblock+(BLOCKSIZE/2));
+    mid->prev =  mid->succ = 0;
+    mid->isfree = 1;
+    mid->pattern = PATTERNUM;
+    mid->size = (BLOCKSIZE/2) - sizeof(MemEntry);
+    */
   }
 
   p=root;
@@ -30,10 +37,11 @@ void *my_malloc(unsigned int size, char* file, int line){
     else if(!p->isfree) p=p->succ;
     else if(p->size<=(size+sizeof(MemEntry))){
       p->isfree=0;
+      p->pattern = PATTERNUM;
       return (char*)p + sizeof(MemEntry);
     }
     else{
-      post = (MemPtr)((char*)p + sizeof(MemEntry))+size;
+      post = (MemPtr)((char*)p + sizeof(MemEntry)+size);
       post->prev = p;
       post->succ=p->succ;
       if(p->succ!=0) p->succ->prev = post;
@@ -42,22 +50,29 @@ void *my_malloc(unsigned int size, char* file, int line){
       post->isfree=1;
       p->size = size;
       p->isfree=0;
+      p->pattern = PATTERNUM;
       /*not post, is beginning of memory*/
       return (char*)p+sizeof(MemEntry);
     }
   }while(p!=0);
+   printf("<ERROR>%s:%d: No room\n", file,line);
   return 0;
 }
 
 
-void my_free(void *p1, char* file, int line){
+void my_free(void *q, const char* file, unsigned int line){
   printf("4\n");
-  if(p1==NULL){
+  if(q==NULL){
     printf("<ERROR>%s:%d: Attempting to free a null pointer\n", file,line);
     return;
   }
+
   MemPtr ptr, pred, after;
-  ptr = (MemPtr)p1-1;
+  ptr = (MemPtr)q-1;
+  if(ptr->pattern!=PATTERNUM){
+    printf("<ERROR>%s:%d: Invalid free\n", file,line);
+    return;
+  }
   printf("5\n");
   printf("is it free? %d\n",ptr->isfree);
   if(ptr->isfree == 1){ //if it's already free

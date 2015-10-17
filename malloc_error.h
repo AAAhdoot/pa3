@@ -1,7 +1,7 @@
 #ifndef MALLOC_ERROR_H
 #define MALLOC_ERROR_H
-#define BLOCKSIZE 6400
-
+#define BLOCKSIZE 10000
+#define PATTERNUM 78245
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -12,16 +12,16 @@
 
 typedef struct MemEntry{
 	struct MemEntry *prev, *succ;
-	int isfree;
+	int isfree, pattern;
 	unsigned int size;
 }MemEntry;
 
 typedef struct MemEntry* MemPtr;
 
 
-void* my_malloc(unsigned int size, char* file, int line);
+void* my_malloc(unsigned int size, const char* file, unsigned int line);
 
-void my_free(void *p1, char* file, int line);
+void my_free(void *q, const char* file, unsigned int line);
 
 
 #endif
