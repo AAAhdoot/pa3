@@ -117,7 +117,7 @@ void *my_malloc(unsigned int size, const char* file, unsigned int line){
 
 void my_free(void *q, const char* file, unsigned int line){
   printf("4\n");
-  if(q==NULL){
+  if(!q){
     printf("<ERROR>%s:%d: Attempting to free a null pointer\n", file,line);
     return;
   }
@@ -153,6 +153,15 @@ void my_free(void *q, const char* file, unsigned int line){
     if(after->succ!=0) after->succ->prev=pred;		
   }
   return;
+}
+
+void * my_calloc(unsigned int size, const char* file, unsigned int line){
+  void * result = my_malloc(size,file,line);
+  if(!result){
+    return 0;
+  }
+  memset(result,0,size);
+  return result;
 }
 
 
