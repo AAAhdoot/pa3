@@ -76,15 +76,12 @@ void *my_malloc(size_t size, const char* file, unsigned int line){
   }
   do{
     if(p->size<size){ 
-      printf("1\n");
       p=p->succ;
     }
     else if(!p->isfree){
-    printf("2\n");
     p=p->succ;
     } 
     else if(p->size<=(size+sizeof(MemEntry))){
-      printf("3\n");
       p->isfree=0;
       p->pattern = PATTERNUM;
       p->file = file;
@@ -108,7 +105,7 @@ void *my_malloc(size_t size, const char* file, unsigned int line){
       return (char*)p+sizeof(MemEntry);
     }
   }while(p!=0 && p!=mid);
-  printf("<ERROR>%s:%d: No room\n", file,line);
+  printf("<ERROR>%s:%d: Not enough space to allocate the requested size\n", file,line);
   return 0;
 }
 
