@@ -1,6 +1,7 @@
 #include "malloc_error.h"
 
 int main(){
+
   char* first;
   char* second;
   char *third;
