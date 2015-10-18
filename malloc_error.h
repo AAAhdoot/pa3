@@ -21,7 +21,7 @@ typedef struct MemEntry{
 
 typedef struct MemEntry* MemPtr;
 
-
+void memleak_check();
 void* my_malloc(size_t size, const char* file, unsigned int line);
 void my_free(void *q, const char* file, unsigned int line);
 void* my_calloc(size_t size, const char* file, unsigned int line);
